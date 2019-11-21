@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Text Analysis with R (22 November 2019)"
+title: "Text Analysis with R (22 November 2019), Part I: Fundamentals"
 output:
   html_document:
     toc: yes
@@ -61,8 +61,10 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 - to set working directory: setwd("path/to/my/file")
 - to find your current location: getwd(). Or to change it: setwd(("~/Desktop"))
 
-**Note**: the ~ takes you to your home directory in a Unix-based system like Mac OS; it's a handy short-cut.
-In Windows you would need to type out the file path, so something like `C:\Users\[username]\Desktop`. A handy tip: start to type your file path and use the `tab` button to see a dropdown menu of your current file location.
+We do this to situate ourselves correctly within the filing system.
+
+**Note**: the `~` takes you to your home directory in a Unix-based system like Mac OS; it's a handy short-cut.
+In **Windows** OS you would need to type out the file path, e.g. `C:\Users\[username]\Desktop`. A handy tip: start to type your file path and use the `tab` button to see a dropdown menu of your current file location.
 
 - to list files in your current location: list.files()
 - to get help: ?<function>, e.g. ?stylo
@@ -102,11 +104,9 @@ typeof('10')
 Notice that the quote characters around the '10' turn this from a constant of type double to a constant of type character. Single or double quotes can be used to define a character constant. 
 
 
-
-
 ### Operators in R
 
-Operations allow you to carroy out mathematics or logical operations, such as addition, subtraction. There are 4 main types of operators:
+Operations allow you to carry out mathematical or logical operations, such as addition, subtraction. There are 4 main types of operators:
 
 - Arithmetic
 - Relational
@@ -133,16 +133,14 @@ y <- 20
 ```
 
 ```{r}
-# 20 to the power of 3?
 y
+# 20 to the power of 3?
 ```
-
-
 
 
 #### Relational operators
 
-Relational operators are used to compare two values and are used when making a decision to control the flow of the script.
+Relational operators are used to compare two values and to control the flow of the script.
 
 `<` less than
 `>` greater than
@@ -158,7 +156,7 @@ x <= 5
 y <= 5.1
 
 # Is x greater than y?
-x
+
 ```
 
 
@@ -169,7 +167,7 @@ x<=y
 ```
 
 
-Relational operators also work across vectors and will apply to each element of the vector. Using the `c()` function to create vectors we can show how to add 5 to each element in a single operation:
+Relational operators also work across vectors and will apply to each element of the vector. Using the `c()` function, which creates simple vectors, we can show how to add 5 to each element in a single operation:
 
 ```{r}
 my.v <- c(1,2,3,4,5)
@@ -178,7 +176,7 @@ my.v <- c(1,2,3,4,5)
 my.v
 ```
 
-You can also add two vectors together, which combines each element in turn. This is called an element-wise operation:
+You can also add two vectors together, which combines each element in turn. This is called an **element-wise operation**:
 
 ```{r}
 new.v <- c(5,4,9,2,1)
@@ -201,9 +199,6 @@ my.v - c(1,2,3,4,4)
 ```
 
 Note, that the elements of your vectors must be of compatible types. You can't add a character to a number.
-
-
-
 
 #### Logical operators
 
@@ -272,55 +267,9 @@ Running the line above will display the entire file! To display a sub-set of ele
 ```
 
 
-R can be good for doing some math. Say I am making a travel budget, and I want to add the cost of hotel and flight prices for a trip to Seattle. The flight is £550 and the hotel price per night is £133. R can do the work for you.
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. (On a Windows machine you would press *[Windows button]+Shift+Enter*.)
-
-```{r}
-550 + 133
-```
-
-R can make all kinds of calculations, so if you want to get the total cost of a five-day trip to Seattle, you can add an operator for multiplication.
-
-```{r}
-550 + 133 * 5
-```
-
-To make this effective, we need to store these kinds of calculations in variables. Variables can be assigned with either <-, =, or ->. Let's do that, and let's compare the price of a 5-day trip to Seattle to a 7-day trip to Paris.
-
-```{r}
-sea.trip.v <- 550 + 133 * 5
-
-paris.trip.v <- 150 + 100 * 7
-```
-
-What is the most expensive trip?
-
-Guess we should go to Paris. What if I just want to do both?
-
-```{r}
-sea.trip.v + paris.trip.v
-```
-
-Suppose further that I wanted to add in an optional 3-day trip to New York City. I want to see which trip would be more expensive if I were to take two out of the three options.
-
-```{r}
-nyc.trip.v <- 300 + 150 * 3
-
-sea.and.nyc <- sea.trip.v + nyc.trip.v 
-
-sea.and.paris <- sea.trip.v + paris.trip.v
-
-sea.and.nyc > sea.and.paris
-```
-
-Above you can see how powerful even simple R programming can be: you can store mathemtical operations in named variables and then use those variables to work with other variables (this becomes very important in word frequency calculations).
-
-You see how this works, and how quickly one can store variables for even practical questions.
-
 ## Vectors
 
-There are other important kinds of R data formats that you should know. The first is a vector, which is a numbered list stored under a single name. An easy way to create a vector is to use the `c` command, which basically means "combine."
+Recall that a vector is a numbered list stored under a single name. An easy way to create a vector is to use the `c` command, which basically means "combine."
 
 ```{r}
 v1 <- c("i", "wait", "with", "bated", "breath")
@@ -328,7 +277,7 @@ v1 <- c("i", "wait", "with", "bated", "breath")
 # confirm the value of the variable by running v1
 v1
 
-# identify a specific value by indicating it is brackets
+# identify a specific value by indicating it in brackets
 v1[4]
 ```
 
@@ -348,7 +297,7 @@ Get used to the functions that help you understand R: `?` and `example()`.
 example(c, echo = FALSE) # change the echo value to TRUE to get the results
 ```
 
-The `c` function is widely used, but it is really only useful for creating small data sets. Many of you will probably want to load text files.
+The `c` function is widely used, but it is really only useful for creating small data sets. Many of you will probably want to load already existing data files.
 
 The other important data structure is called a data frame. This is probably the most useful for sophisticated analyses, because it renders the data in a table that is similar to a spreadsheet. It is also more than that: a data frame is actually a special kind of list of vectors and factors that have the same length. 
 
@@ -356,7 +305,7 @@ It is important to input your data in an Excel or Google docs spreadsheet and th
 
 ## Generating, loading, and manipulating data frames
 
-Data frames are basically two-dimensional matrices, whereas vectors are unidomensional. Suppose you have a group of texts and you want to keep track of some of their metadata.
+Data frames are basically two-dimensional matrices, whereas vectors are uni-dimensional. Suppose you have a group of texts and you want to keep track of some of their metadata.
 
 David Copperfield / Charles Dickens / novel / British
 Pictures from Italy / Charles Dickens / nonfiction / British
@@ -376,6 +325,7 @@ Here we have just created variables containing vectors. The `data.frame` functio
 
 ```{r}
 metadata <- data.frame(title, author, genre, nationality)
+# the arguments after data.frame create row labels for each data type
 
 str(metadata)  
 
@@ -388,10 +338,13 @@ You have just created a data frame. The `str` function shows you the structure o
 metadata$author
 
 metadata$nationality
+
+# how would you only print the unique data?
+
 ```
 This is a fairly simple example to show you the syntax and meaning of a data frame, but most of you will be loading data into R. (Though you should remember that the `data.frame` fucntion is often used in code to transform lists.) Usually that data comes from a spreadsheet software (Microsoft Excel, Apple Numbers, Google Sheets).
 
-To **load** data we use the `read.csv` or `read.table` function. (See Gries, pp. 53-54.) From our GitHub site, download the bow-in-the-cloud-metadata-box1.csv file. Let's use that to run some experiments on data frames.
+To **load** data we use the `read.csv` or `read.table` function. (See [Gries](https://www.routledge.com/Quantitative-Corpus-Linguistics-with-R-A-Practical-Introduction-2nd-Edition/Gries/p/book/9781138816275), pp. 53-54.) Our GitHub repository has the `bow-in-the-cloud-metadata-box1.csv` file. Let's use that to run some experiments on data frames.
 
 ```{r}
 rm(list = ls(all=TRUE))
@@ -419,10 +372,10 @@ In your working directory you should now have a new csv file that looks quite si
 The best way to load text files is with the `scan` function. First, download a text file of Dickens's [*Great Expectations*](https://www.dropbox.com/s/qji9ueb46ajait9/dickens_great-expectations.txt?dl=0) onto your working directory (it is also available in our corpus directory, in the c19-20 subdirectory).
 
 ```{r}
-dickens.v <- scan("dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+dickens.v <- scan("corpus/c19-20_prose/dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
 ```
 
-You have now loaded *Great Expectations* into a variable called `dickens.v`. It is now a vector of lines in the book that can be analysed. Let's see if that is true.
+You have now loaded *Great Expectations* into a variable called `dickens.v`. It is now a vector of paragraphs in the book that can be analysed. Let's see if that is true.
 
 ```{r}
 head(dickens.v)
@@ -587,9 +540,7 @@ There is also shorthand function for doing the same thing, called `cat()`:
 
 ```
 
-### Putting regular expressions to use
-
-#### Data wrangling
+### Data wrangling
 
 There are a few functions in R that use regular expressions: `regexpr`, `gregexpr`, `regmatches`, `sub`, `gsub`.
 
@@ -597,7 +548,7 @@ Briefly we will perform a basic data wrangling exercise. Allison Parrish created
 
 ```{r} 
 setwd("~/Desktop") # make sure your notebook file and all other files are saved on your Desktop
-gutenberg.poetry.v <- scan(file="./gutenburg-poetry/gutenberg-poetry-v001-sample500k.ndjson", what="character", sep="\n", encoding = "UTF-8") # you may want to use the smaller file "gutenberg-poetry-v001-sample10k.ndjson" with 10k lines to test
+gutenberg.poetry.v <- scan(file="gutenberg-poetry-v001-sample500k.ndjson", what="character", sep="\n", encoding = "UTF-8") # you may want to use the smaller file "gutenberg-poetry-v001-sample10k.ndjson" with 10k lines to test
 poetry.strip.s.v <- gsub('\\{"s": "', " ", gutenberg.poetry.v)
 poetry.strip.s.v
 gutenberg.poems.plain.v <- gsub(', "gid": "\\d+"\\}', " ", poetry.strip.s.v)
@@ -612,7 +563,7 @@ Now you have a plain text file with a numbered list of lines of poetry. Now you 
 If you have not already, download the text file of Dickens's [*Great Expectations*](https://www.dropbox.com/s/qji9ueb46ajait9/dickens_great-expectations.txt?dl=0), or copy the file from our github corpus, onto your working directory and scan the text.
 
 ```{r}
-dickens.v <- scan("great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+dickens.v <- scan("/corpus/c19-20_prose/great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
 ```
 You have now loaded *Great Expectations* into a variable called `dickens.v`.
 
@@ -747,7 +698,7 @@ We will not have time to go into details regarding these operations, but it is i
 Now, using what we know about regular expressions and flow control, let's have look at a for() loop that Matthew Jockers uses in Chapter 4 of his *Text Analysis for Students of Literature*. It's a fairly complicated but useful way of breaking up a novel text into chapters for analysis. Let's use it to process the Dickens novel. 
 
 ```{r}
-text.v <- scan("dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+text.v <- scan("/corpus/c19-20_prose/dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
 not.blanks.v <- which(text.v!="")
 clean.text.v <- text.v[not.blanks.v]
 
@@ -1134,7 +1085,7 @@ zeta.results$words.avoided[1:20]
 
 So, what is distinctly Mark Twain and what is Warner-esque?
 
-## Other useful functions 
+## Other useful functions
 
 For performing supervised machine-learning analyses, including Burrows’s Delta, Support Vector Machines, and so forth:
 
@@ -1157,6 +1108,7 @@ Rolling Stylometry technique (which slices an input text into equal-sized sample
 ```{r}
 rolling.classify(write.png.file = TRUE)
 ```
+
 What you're seeing is a series of "windows" of the test text as against the reference texts. By “windowing” I mean that each reference text is divided into consecutive, equal-sized samples. It employs the relative frequencies of a (preferably small) set of n words which were also frequent in the reference collection. As Eder et al suggest, " If the curve for a text would show a sudden drop at a given position, this could be indicative of a stylistic change in the text (which might, for instance, be caused by one author taking over from another."
 
 The vertical lines in the plot can be thought to mark the position of certain events in the test text, either a change in chapter or a change in style.
@@ -1172,10 +1124,6 @@ Before getting started, make sure you have set your working directory.
 ```{r warning = FALSE}
 setwd("~/Desktop")
 ```
-
-We did this to situate ourselves correctly within the filing system: I set the working directory to a reasonable place for me, the Desktop.
-
-Note that the squiggly line (~) tells the system to return to the root (or home) directory, and your Desktop should be the next step (/) from the root. In Windows you would need to type out the file path, so something like `C:\Users\[username]\Desktop`.
 
 Next we load the necessary libraries for these lessons. **Note**: If you get error messages, you will need to install the libraries by navigating to the "Packages" tab on the right-side panel of RStudio. Then click "Install," enter the name of the package, and install it.
 
