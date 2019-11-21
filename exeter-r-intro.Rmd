@@ -1,0 +1,1479 @@
+---
+title: "Introduction to Text Analysis with R (22 November 2019)"
+output:
+  html_document:
+    toc: yes
+  html_notebook:
+    theme: united
+    toc: yes
+---
+
+## What exactly is programming?
+
+Every computer program is a series of instructions---a sequence of separate, small commands. The art of programming is to take a general idea and break it apart into separate steps. (This may be just as important as learning the rules and syntax of a particular language.)
+
+Programming (or code) consists of either imperative or declarative style. R uses imperative style, meaning it strings together instructions to the computer. (Declarative style involves telling the computer what the end result should be, like HTML code.) There are many subdivisions of imperative style, but the primary concern for beginning programmers should be procedural style: that is, describing the steps for achieving a task.
+
+Each step/instruction is a *statement*---words, numbers, or equations that express a thought.
+
+## Why are there so many languages?
+
+The central processing unit (CPU) of the computer does not understand any of them! The CPU only takes in *machine code*, which runs directly on the computer's hardware. Machine code is basically unreadable, though: it's a series of tiny numerical operations.
+
+Several popular computer programming languages are actually translations of machine code; they are literally interpreted---as opposed to a compiled---languages. They bridge the gap between machine code/computer hardware and the human programmer. What we call our *source code* is our set of statements in our preferred language that interacts with machine code.
+
+Source code is simply written in plain text in a text editor. **Do not** use a word processor.
+
+The computer knows understands source code by the file extension. For us, that means the ".R" extension (and the R notebook is ".Rmd").
+
+While you do not need a special program to write code, it is usually a good idea to use an **IDE** (integrated development environment) to help you. Many people (like me) use the [oXygen](https://www.oxygenxml.com/) IDE for editing XML documents and creating transformations with XSLT. Python users often use [Pycharm](https://www.jetbrains.com/pycharm/) or [Anaconda](https://www.anaconda.com/). For R, I like to use [RStudio](https://www.rstudio.com/) (more on that in a moment). 
+
+## Why are we using R?
+
+Short answer: because I like R. I have learned some Python, too, but for some reason R worked better for me. This suggests an important takeaway from this session: there is no single language that is *better* than any other. What you chose to work with will depend on what materials you are working on, what level of comfort you have with a given language, and what kinds of outputs you would like from your code.
+
+For example, if I am primarily interested in text-based edition projects, I would be wise to work mostly with XML technologies: TEI-XML, XPath, XSLT, and XQuery, just to name a few. However, I have seen people use Python and JavaScript to transform XML. While I would advocate XSLT for such an operation, it is better for you to use your preferred language to get things done.
+
+That all said, R does have some distinct advantages:
+  
+- The visualisation libraries are excellent.
+
+- Being so dependent on variables, the code is more readable than many other languages (like JavaScript).
+
+- It was built by data scientists and linguists, so it is optimal for dealing with structured text and data sets.
+
+## The R Environment (for those who are new to R)
+
+When you first launch R, you will see a console:
+  
+  ![R image](https://daedalus.umkc.edu/StatisticalMethods/images/R-Console-300x280.png)
+
+This interface allows you to run R commands just like you would run commands on a Bash scripting shell. 
+
+When you open this file in RStudio, the command line interface (labeled "Console") is below the editing window. When you run a code block in the editing window, you will see the results appear in the Console below.
+
+## About R Markdown
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+## Some basic R functions
+- to activate a package: library(XML)
+- to set working directory: setwd("path/to/my/file")
+- to find your current location: getwd(). Or to change it: setwd(("~/Desktop"))
+
+**Note**: the ~ takes you to your home directory in a Unix-based system like Mac OS; it's a handy short-cut.
+In Windows you would need to type out the file path, so something like `C:\Users\[username]\Desktop`. A handy tip: start to type your file path and use the `tab` button to see a dropdown menu of your current file location.
+
+- to list files in your current location: list.files()
+- to get help: ?<function>, e.g. ?stylo
+- to quit R: q()
+
+### Variables in R
+
+Variables in R are used to store data. The data stored in variables can be changed or used according to your needs, they can be single values or complex objects, and variables can be passed to functions (as a way of passing larger or more complex data, like word vectors, to functions for text processing).
+
+Variable names are cAse seNsitiVe, can contain a combindation of letters, digits, full stops (periods) or underscores (_). They can begin with a letter or full stop, but cannot start with a digit, and as before, reserved words cannot be used as variable names.
+
+```{r}
+8variable <- 'invalid variable'
+```
+
+```{r}
+.myVariaBl3 <- 'valid variable'
+
+# show the variable?
+
+```
+
+R also does not like it when you use hyphens (-) in variable names.
+
+
+### Constants in R
+
+Constants in programming are atomic values themselves and once created cannot be changed. There basic types of constants are numeric and character constants. Numeric constants are numbers (either integers, doubles or floating point numbers [i.e. complex numbers]) and character constants can be combined into strings of text. Constants can be assigned to variables.
+
+```{r}
+typeof(10)
+typeof(5)
+typeof("line of text")
+typeof('10')
+```
+
+Notice that the quote characters around the '10' turn this from a constant of type double to a constant of type character. Single or double quotes can be used to define a character constant. 
+
+
+
+
+### Operators in R
+
+Operations allow you to carroy out mathematics or logical operations, such as addition, subtraction. There are 4 main types of operators:
+
+- Arithmetic
+- Relational
+- Logical
+- Assignment
+
+
+#### Arithmetic operators
+
+Arithmetic operators are used to carry out mathematical operations, like addition and subtraction.
+
+`+` addition
+`-` subtraction
+`*` multiplication
+`/` division
+`^` exponent
+`%%` modulus
+
+For example:
+
+```{r, echo=TRUE} 
+x <- 3
+y <- 20
+```
+
+```{r}
+# 20 to the power of 3?
+y
+```
+
+
+
+
+#### Relational operators
+
+Relational operators are used to compare two values and are used when making a decision to control the flow of the script.
+
+`<` less than
+`>` greater than
+`<=` less than or equal to
+`>=` great than or equal to
+`==` equal to (NB: a single `=` is an assignment, not a relational comparison)
+`!=` not equal to
+
+For example:
+
+```{r}
+x <= 5
+y <= 5.1
+
+# Is x greater than y?
+x
+```
+
+
+The context of the '<=' in the code block above is subtle. The first line is assigning a constant to a variable named 'x'. The last line is comparing two variables using the relational operator.
+
+```{r}
+x<=y
+```
+
+
+Relational operators also work across vectors and will apply to each element of the vector. Using the `c()` function to create vectors we can show how to add 5 to each element in a single operation:
+
+```{r}
+my.v <- c(1,2,3,4,5)
+
+# add 5 to all the elements of the vector variable my.v?
+my.v
+```
+
+You can also add two vectors together, which combines each element in turn. This is called an element-wise operation:
+
+```{r}
+new.v <- c(5,4,9,2,1)
+
+my.v + new.v
+```
+
+If your vectors are of different lengths, element-wise operations repeat the shortest vector and continue to apply element-wise to the longer vector:
+
+```{r}
+short.v <- c(1,2)
+
+my.v + short.v
+```
+
+You don't need to first create a variable either, you can dynamically create a vector as part of the relational operation:
+
+```{r}
+my.v - c(1,2,3,4,4)
+```
+
+Note, that the elements of your vectors must be of compatible types. You can't add a character to a number.
+
+
+
+
+#### Logical operators
+
+Logical operators are used to perform Boolean operations between constants, variables or vectors.
+
+`!` logical NOT
+`&` element-wise logical AND (for use with vectors)
+`&&` logical AND (for use with constants or simple variables)
+`|` element-wise logical OR
+`||` logical OR
+
+Note, the `AND` and `OR` logical operands are different for constant or element wise.
+
+When performing logical operands, non-zero numbers are considered `TRUE` and `0` is considered `FALSE`
+
+For example:
+
+```{r}
+x <- c(TRUE, FALSE, 12, 1)
+y <- c(FALSE, FALSE, 0, 1)
+
+# negate the elements of x?
+x
+```
+
+```{r}
+# perform element wise AND to x and y?
+y
+```
+
+Element-wise logical operands are useful when you start to work with large lists of words. You can quickly create a vector of TRUE/FALSE elements which indicate which items in the vector match which words you might be interested in.
+
+```{r}
+word.v <- c('the', 'quick', 'brown', 'fox')
+
+word.v == 'quick'
+```
+
+You can then use this boolean vector to filter or 'slice' elements out of the word vector, according to their position in the vector (the position of an element is called it's 'index', and square brackets are used to select elements from a vector by their index:
+
+```{r}
+# Find all words which DO NOT MATCH the word 'quick'?
+# (hint, use the last line in the code block above inside the square brackets, and negate the conditional)
+word.v[]
+```
+
+
+When doing text analaysis you will work with a lot of word vectors (lists) and data frames (tables), and a common variable naming convention which you will see throughout this course is to use the full stop followed by a 'v' to indicate that the variable contains a vector object.
+
+Using the scan() function, you can load a file, split it line by line into a vector. The filename.txt below does not exist - you will need to change this to a file which does exist. Try to find a text file on your computer, and display it:
+
+```{r}
+# this variable name suggests the contents of this variable object are a word vector
+# change the file to something which works!
+myfile.v <- scan("filename.txt", what="character", sep="\n", encoding = "UTF-8")
+
+# this variable name suggests the contents of this variable object are vector
+myfile.v
+```
+
+Running the line above will display the entire file! To display a sub-set of elements in a vector you can use the square bracket notation `[x:y]` to slice elements from a vector. So, for example, to slice the 25th to 30th elements you would use [25:30]:
+
+```{r}
+# display the first 15 lines from `myfile.v`
+
+```
+
+
+R can be good for doing some math. Say I am making a travel budget, and I want to add the cost of hotel and flight prices for a trip to Seattle. The flight is £550 and the hotel price per night is £133. R can do the work for you.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. (On a Windows machine you would press *[Windows button]+Shift+Enter*.)
+
+```{r}
+550 + 133
+```
+
+R can make all kinds of calculations, so if you want to get the total cost of a five-day trip to Seattle, you can add an operator for multiplication.
+
+```{r}
+550 + 133 * 5
+```
+
+To make this effective, we need to store these kinds of calculations in variables. Variables can be assigned with either <-, =, or ->. Let's do that, and let's compare the price of a 5-day trip to Seattle to a 7-day trip to Paris.
+
+```{r}
+sea.trip.v <- 550 + 133 * 5
+
+paris.trip.v <- 150 + 100 * 7
+```
+
+What is the most expensive trip?
+
+Guess we should go to Paris. What if I just want to do both?
+
+```{r}
+sea.trip.v + paris.trip.v
+```
+
+Suppose further that I wanted to add in an optional 3-day trip to New York City. I want to see which trip would be more expensive if I were to take two out of the three options.
+
+```{r}
+nyc.trip.v <- 300 + 150 * 3
+
+sea.and.nyc <- sea.trip.v + nyc.trip.v 
+
+sea.and.paris <- sea.trip.v + paris.trip.v
+
+sea.and.nyc > sea.and.paris
+```
+
+Above you can see how powerful even simple R programming can be: you can store mathemtical operations in named variables and then use those variables to work with other variables (this becomes very important in word frequency calculations).
+
+You see how this works, and how quickly one can store variables for even practical questions.
+
+## Vectors
+
+There are other important kinds of R data formats that you should know. The first is a vector, which is a numbered list stored under a single name. An easy way to create a vector is to use the `c` command, which basically means "combine."
+
+```{r}
+v1 <- c("i", "wait", "with", "bated", "breath")
+
+# confirm the value of the variable by running v1
+v1
+
+# identify a specific value by indicating it is brackets
+v1[4]
+```
+
+[Jeff Rydberg-Cox](https://daedalus.umkc.edu/StatisticalMethods/preparing-literary-data.html) provides some helpful tips for preparing data for R processing:
+
+- Download the text(s) from a source repository.
+
+- Remove extraneous material from the text(s).
+
+- Transform the text(s) to answer your research questions.
+
+Get used to the functions that help you understand R: `?` and `example()`.
+
+```{r}
+?c
+
+example(c, echo = FALSE) # change the echo value to TRUE to get the results
+```
+
+The `c` function is widely used, but it is really only useful for creating small data sets. Many of you will probably want to load text files.
+
+The other important data structure is called a data frame. This is probably the most useful for sophisticated analyses, because it renders the data in a table that is similar to a spreadsheet. It is also more than that: a data frame is actually a special kind of list of vectors and factors that have the same length. 
+
+It is important to input your data in an Excel or Google docs spreadsheet and then export that data into a comma separated value (.csv) or tab separated value (.tsv) file.
+
+## Generating, loading, and manipulating data frames
+
+Data frames are basically two-dimensional matrices, whereas vectors are unidomensional. Suppose you have a group of texts and you want to keep track of some of their metadata.
+
+David Copperfield / Charles Dickens / novel / British
+Pictures from Italy / Charles Dickens / nonfiction / British
+Leaves of Grass / Walt Whitman / poetry / American
+Sartar Resartus / Thomas Carlyle / nonfiction / British
+
+We can **create** a data frame to arrange this material in tabular format:
+
+```{r}
+title <- c("David Copperfield", "Pictures from Italy", "Leaves of Grass", "Sartar Resartus")
+author <- c("Charles Dickens", "Charles Dickens", "Walt Whitman", "Thomas Carlyle")
+genre <- c("novel", "nonfiction", "poetry", "nonfiction")
+nationality <- c("British", "British", "American", "British")
+```
+
+Here we have just created variables containing vectors. The `data.frame` function, which takes the vector variables as arguments and combines them into a table.
+
+```{r}
+metadata <- data.frame(title, author, genre, nationality)
+
+str(metadata)  
+
+summary(metadata)
+```
+
+You have just created a data frame. The `str` function shows you the structure of the data frame, and the `summary` function shows you the unique values, among other interesting facts. The dollar sign ($) can be used to identify specific variables in the data frame.
+
+```{r}
+metadata$author
+
+metadata$nationality
+```
+This is a fairly simple example to show you the syntax and meaning of a data frame, but most of you will be loading data into R. (Though you should remember that the `data.frame` fucntion is often used in code to transform lists.) Usually that data comes from a spreadsheet software (Microsoft Excel, Apple Numbers, Google Sheets).
+
+To **load** data we use the `read.csv` or `read.table` function. (See Gries, pp. 53-54.) From our GitHub site, download the bow-in-the-cloud-metadata-box1.csv file. Let's use that to run some experiments on data frames.
+
+```{r}
+rm(list = ls(all=TRUE))
+bow.metadata <- read.csv(file = "bow-in-the-cloud-metadata-box1.csv", header = TRUE, sep = ",")
+
+str(bow.metadata)
+
+```
+
+```{r}
+bow.metadata$Creator[1:10]
+```
+
+
+You may also want to output a file using `write.table`.
+
+```{r}
+write.table(bow.metadata, file = "bow-metadata-df.csv", sep = "\t", quote = FALSE, row.names = FALSE)
+```
+
+In your working directory you should now have a new csv file that looks quite similar to the original spreadsheet. Again, not particularly interesting here, but in many cases you will find yourself turning vectors into data frames in R, and then outputting your results into csv files. It's also important to know the difference between the `read.csv` and `write.table` functions.
+
+### Reading Data in R
+
+The best way to load text files is with the `scan` function. First, download a text file of Dickens's [*Great Expectations*](https://www.dropbox.com/s/qji9ueb46ajait9/dickens_great-expectations.txt?dl=0) onto your working directory (it is also available in our corpus directory, in the c19-20 subdirectory).
+
+```{r}
+dickens.v <- scan("dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+```
+
+You have now loaded *Great Expectations* into a variable called `dickens.v`. It is now a vector of lines in the book that can be analysed. Let's see if that is true.
+
+```{r}
+head(dickens.v)
+```
+
+The head function is the same as the basic Unix command for showing the first part of a file. This can be useful for testing whether your code has worked.
+
+
+### The IF statement
+
+The `if` statement allows you to make a decision, and is an important part of programming. The `if` statement can use used alone or a sequence of `if..else if...else` statements can be setup in a ladder for a sequence of decisions.
+
+```
+if (condition text) {
+  code to run when condition is true
+  
+} else if (another condition) {
+  cone to run when second condition is true
+  
+} else {
+  code to run otherwise
+  
+}
+```
+
+Let's create some simple vectors of random words to practice with:
+
+```{r}
+words.v <- c('sign', 'chance', 'pricey', 'hot', 'drawer', 'cabbage', 'elated', 'nation', 'offer', 'man', 'zebra')
+numbers.v <- c(1,2,3,4,5,6,7,8,9,10)
+```
+
+We can check if a specific element is a certain value, by combining indices, boolen operators and if statements. Indices use square bracket notation and refer to the position of the element in the vector.
+
+Notice also the single line if syntax works with and without curly brackets:
+
+```{r}
+if (words.v[2] == 'chance') print('The second element is chance')
+
+if (words.v[3] == 'chance') { print('The third element is chance') }  # This will not print anything
+```
+
+Curly brackets are necessary when your if...then...else statement contains more than one line of code. It is often important to use indentation and formatting, to visually group the lines of code together.
+
+```{r}
+if (words.v[2] == 'chance') {
+  print('The third element is chance')
+  print('The third element is chance')
+}
+```
+
+We have been using square bracket notation to target specific elements by their position. The first element of a vector is index 1. If you wanted to test the last element in a vector, you need to know the vector's length.
+
+```{r}
+length(words.v)
+
+# Check if the last word in the vector is 'zebra'? Use the length() function inside the square brackets and add a test for equal to 'zebra'
+if (words.v[]) { print('The last element is zebra') }
+```
+
+
+
+
+### The FOR statement
+
+Some of the operations above implicity loop through vectors to perform element-wise operations, but it is sometimes useful to explicitly loop through vectors to perform specific tests and tasks on each element.
+
+We can use a for loop to go element-wise through our words vector, printing each word out along the way:
+
+```{r}
+for(val in words.v) {
+  # the variable 'val' is reused each iteration. It will contain the last value in the loop.
+  print(val)
+}
+```
+
+
+You can also use vector slicing syntax [x:x] to loop through small sections of vectors:
+
+```{r}
+# Print the first 4 elements?
+for(val in words.v[]) {
+  print(val)
+}
+```
+
+
+Now, let's create a vector of 20 random numbers using for loops. To do this, we use the `runif` function to generate a random number between 0 and 1, and a for loop, looping 20 times, adding each random number to the end of a vector variable.
+
+Let's look at the `runif()` help:
+
+```{r}
+?runif
+```
+
+```{r}
+# What does runif(1) return?
+
+```
+
+
+To generate 20 random numbers, we will need to loop 20 times. We can use the `seq()` function to generate a sequence vector with 20 elements (easier than typing it all out explicitly):
+
+```{r}
+seq(1,20)
+```
+
+So, putting this together, we first create an empty vector object outside the for loop, then loop 20 times, generate and add a new random number to the end of the vector object. Then, once the loop is complete, we print the vector:
+
+```{r}
+random.v <- c()
+for (val in seq(1,20)) {
+  random.v <- c(random.v, runif(1))
+}
+
+random.v
+```
+
+
+This is not an efficient way to generate or iterate vectors, but it is supposed to demonstrate looping and variable re-assignment.
+
+It's much easier to use the built in `runif()` feature to simply generate a vector of any number of random numbers!:
+
+```{r}
+# Generate 20 random numbers using runif()
+runif(20)
+```
+
+
+Now that you know how to loop, let's add some decisons inside the loop which are dependent on the value of each element. Notice that the variable `element` is being tested each time, and that the value of the element variable is changing. This is because the variable is 'scoped' to the for loop.
+
+Print out each random element, and 'TRUE' or 'FALSE' according to when the value is above 0.5:
+
+```{r}
+for (element in runif(20)) {
+  if (element >= 0.5) {
+    print(paste('TRUE  ', element))
+  }
+  # Add else to print 'FALSE' case?
+}
+```
+
+Notice that the code block above used the `paste()` function to print a boolean variable and a number. The paste function concatenates values/objects/constants into printable strings. You can use this to format variables for display and to check if the value is hat you expect.
+
+```{r}
+# Paste and print some variables, elements and constants together and see what happens?
+# e.g. print(paste(x, ',', my.v[1], "blah", words.v[3]))
+
+
+```
+
+There is also shorthand function for doing the same thing, called `cat()`:
+
+```{r}
+?cat
+```
+
+```{r}
+# Try printing elements and variables you have already created at the top of this notebook.
+# e.g. cat(x, ',', my.v[1], "blah", words.v[3])
+
+
+```
+
+### Putting regular expressions to use
+
+#### Data wrangling
+
+There are a few functions in R that use regular expressions: `regexpr`, `gregexpr`, `regmatches`, `sub`, `gsub`.
+
+Briefly we will perform a basic data wrangling exercise. Allison Parrish created a data set that gathers all of the poems in Project Gutenberg into one json file, which can be found on [github](https://github.com/aparrish/gutenberg-poetry-corpus). But suppose we do not want to work with json, and we just want a plain text file of all of the poems in Project Gutenberg? That could be useful. We would then use regular expressions to strip out the json and render a plain text file.
+
+```{r} 
+setwd("~/Desktop") # make sure your notebook file and all other files are saved on your Desktop
+gutenberg.poetry.v <- scan(file="./gutenburg-poetry/gutenberg-poetry-v001-sample500k.ndjson", what="character", sep="\n", encoding = "UTF-8") # you may want to use the smaller file "gutenberg-poetry-v001-sample10k.ndjson" with 10k lines to test
+poetry.strip.s.v <- gsub('\\{"s": "', " ", gutenberg.poetry.v)
+poetry.strip.s.v
+gutenberg.poems.plain.v <- gsub(', "gid": "\\d+"\\}', " ", poetry.strip.s.v)
+gutenberg.poems.plain.v[1:10] # show the first ten lines just to see if it worked
+write.table(gutenberg.poems.plain.v, "gutenberg-poems.txt", row.names=F)
+```
+
+Now you have a plain text file with a numbered list of lines of poetry. Now you can upload this file into Voyant or run it through AntConc for basic text analysis results.
+
+#### Cleaning up Dickens
+
+If you have not already, download the text file of Dickens's [*Great Expectations*](https://www.dropbox.com/s/qji9ueb46ajait9/dickens_great-expectations.txt?dl=0), or copy the file from our github corpus, onto your working directory and scan the text.
+
+```{r}
+dickens.v <- scan("great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+```
+You have now loaded *Great Expectations* into a variable called `dickens.v`.
+
+With the text loaded, you can now run quick statistical operations, such as the number of lines and word frequencies.
+
+```{r}
+length(dickens.v) # this finds the number of lines in the book
+
+dickens.lower.v <- tolower(dickens.v) # this makes the whole text lowercased, and each sentence is now in a list
+
+dickens.words <- strsplit(dickens.lower.v, "\\W") # strsplit is very important: it takes each sentence in the lowercased words vector and puts each word in a list by finding non-words, i.e., word boundaries
+# each list item (word) corresponds to an element of the book's sentences that has been split. In the simplest case, x is a single character string, and strsplit outputs a one-item list.
+
+class(dickens.words) # the class function tells you the data structure of your variable
+
+dickens.words.v <- unlist(dickens.words)
+
+class(dickens.words.v)
+
+dickens.words.v[1:20] # find the first 20 ten words in Great Expectations
+```
+
+Did you notice the "\\W" in the `strsplit` argument? What is that again? Regex! Notice that in R you need to use another backslash to indicate a character escape.
+
+Also, did you notice the blank result on the 10th word? This requires a little clean-up step.
+
+```{r}
+not.blanks.v <- which(dickens.words.v!="")
+
+dickens.words.v <- dickens.words.v[not.blanks.v]
+```
+
+Extra white spaces often cause problems for text analysis.
+
+```{r}
+dickens.words.v[1:20]
+```
+
+
+Voila! We might want to examine how many times the third result "father" occurs (the fourth word result, and one that will probably be an important word in this book).
+
+```{r}
+length(dickens.words.v[which(dickens.words.v=="father")])
+```
+
+Or produce a list of all unique words.
+
+```{r}
+unique(sort(dickens.words.v, decreasing = FALSE))[1:50]
+```
+
+Here we find another problem: we find in our unique word list some odd non-words such as "0037m." We should strip those out.
+
+## Exercise
+
+Create a regular expression to remove those non-words in `dickens.words.v`? Remember that you use two backslashes (//) for character escape. For more information on using regex in R, RStudio has a helpful [cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf).
+
+```{r}
+
+```
+
+Now let's re-run that not.blanks vector to strip out the blank you just added. 
+
+```{r}
+not.blanks.v <- which(dickens.words.clean.v!="")
+
+dickens.words.clean.v <- dickens.words.clean.v[not.blanks.v]
+
+unique(sort(dickens.words.clean.v, decreasing = FALSE))[1:50]
+```
+
+Returning to basic functions, now that we have done some more clean-up: how many unique words are in the book?
+
+```{r}
+length(unique(dickens.words.clean.v))
+```
+
+Divide this by the amount of words in the whole book to calculate vocabulary density ratios.
+
+```{r}
+unique.words <- length(unique(dickens.words.clean.v))
+
+total.words <- length(dickens.words.clean.v)
+
+unique.words/total.words 
+# you could do this quicker this way: 
+# length(unique(dickens.words.v))/length(dickens.words.v) 
+# BUT it's good to get into the practice of storing results in variables
+```
+That's actually a fairly small density number, 5.7% (*Moby-Dick* by comparison is about 8%).
+
+The other important data structures are tables and data frames. These are probably the most useful for sophisticated analyses, because it renders the data in a table that is very similar to a spreadsheet. It is important to input your data in an Excel or Google docs spreadsheet and then export that data into a comma separated value (.csv) or tab separated value (.tsv) file. Many of the tidytext operations work with data frames, as we'll see later.
+
+### Flow control: For-loops and conditionals in R
+
+Flow control involves **stochastic simulation**, or repetitive operations or pattern recognition---two of the more important reasons why we use programming languages. The most common form of stochastic simulation is the for() loop. This is a logical command with the following syntax
+
+for (`name` in `seq`) {[enter commands]}
+
+This sets a variable called `name` (any thing you choose to assign) equal to each of the elements of the sequence (any sequence of values), which is usually a vector. Each of these iterates over the command as many times as is necessary. 
+
+```{r}
+for (i in letters[1:10]){
+  cat(i, ", which is followed by \n")
+}
+```
+
+
+What this literally means is: create a variable called `i` as an index for the loop. The first value of `i` is `a` (the first value of `letters`, after the `in`), and R executes the function within the loop (taking the instructions within the curly brackets). The code above just prints `i` and the text ", which is followed by" with a new line (signified by the regex "\n"). When the closing bracket is reached, `i` moves onto the next value (the second letter). When the loop reaches the last value of the sequence (the tenth of the `letters`), it is completed.
+
+Another simple example is the Fibonacci sequence. A for() loop can automatically generate the first 20 Fibonacci numbers.
+
+```{r}
+Fibonacci <- numeric(20) # creates a vector called Fibonacci that consists of 20 numeric vectors
+
+Fibonacci[1] <- Fibonacci[2] <- 1 # defines the first and second elements as a value of 1. This is important b/c the first two Fibonacci numbers are 1, and the next (3rd) number is gained by adding the first two
+
+for (i in 3:20) Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1] # says for each instance of the 3rd through 20th Fibonacci numbers, take the first element - 2 and add that to the next element - 1
+Fibonacci
+```
+
+There is another important component to flow control: the conditional. In programming this takes the form of `if()` statements.
+
+**Syntax**
+
+`if (condition) {commands when TRUE}`
+
+`if (condition) {commands when TRUE} else {commands when FALSE}`
+
+We will not have time to go into details regarding these operations, but it is important to recognize them when you are reading or modifying someone else's code.
+
+Now, using what we know about regular expressions and flow control, let's have look at a for() loop that Matthew Jockers uses in Chapter 4 of his *Text Analysis for Students of Literature*. It's a fairly complicated but useful way of breaking up a novel text into chapters for analysis. Let's use it to process the Dickens novel. 
+
+```{r}
+text.v <- scan("dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+not.blanks.v <- which(text.v!="")
+clean.text.v <- text.v[not.blanks.v]
+
+start.v <- which(clean.text.v == "Chapter I")
+end.v <- which(clean.text.v == "THE END")
+novel.lines.v <- clean.text.v[start.v:end.v]
+chap.positions.v <- grep("^Chapter \\w", novel.lines.v)
+
+novel.lines.v[chap.positions.v]
+
+chapter.raws.l <- list()
+chapter.freqs.l <- list()
+
+# the following for loop starts by iterating over each item in chap.positions.v
+
+for(i in 1:length(chap.positions.v)){
+  # in this if statement: if the value of i is not equal to the length of the vector, keep iterating over the vector
+    if(i != length(chap.positions.v)){
+chapter.title <- novel.lines.v[chap.positions.v[i]] # this variable captures the chapter title in novel.lines.v that is indicated by the value held in the chap.positions.v. If this is confusing, try this: In your console, set i to 1 by running i <- 1. Then run novel.lines.v[chap.positions.v[i]]
+start <- chap.positions.v[i]+1 # i+1 gives me the position of the first line of the chapter text (the first paragraph after the ch title, in other words)
+end <- chap.positions.v[i+1]-1 # run these lines in the console: i <- 1, then chap.positions.v[i+1]. Instead of adding 1 to the value stored in the ith position of chap.positions.v, it adds 1 to i as an index. Instead of extracting the value of the ith item in the vector, the program identifies the value of the item in the next position beyond i in the vector. This line returns the next item in the vector, and the value held in that spot is the position for the start of a new chapter. This ensures the processing of the next chapter. To ignore the words in the chapter heading, you subtract 1 from that value in order to get the line number in novel.lines.v that comes just before the start of a new chapter.
+chapter.lines.v <- novel.lines.v[start:end] # having defined start and end points of each chapter, you extract the lines
+chapter.words.v <- tolower(paste(chapter.lines.v, collapse=" ")) # pastes chapter lines into a single block of text, and lowercases each word
+chapter.words.l <- strsplit(chapter.words.v, "\\W") # split all words in each chapter into a vector of words
+chapter.word.v <- unlist(chapter.words.l)
+chapter.word.v <- chapter.word.v[which(chapter.word.v!="")] 
+chapter.freqs.t <- table(chapter.word.v) # tabulates vector of words into a frequency count of each word type
+chapter.raws.l[[chapter.title]] <- chapter.freqs.t # here you dump the table of raw frequency counts into the empty list that was created before entering the loop. The double brackets assign a label to the list item; here each item in the list is named with the chapter heading extracted a few lines above
+chapter.freqs.t.rel <- 100*(chapter.freqs.t/sum(chapter.freqs.t)) # converts the raw counts to relative frequencies based on the number of words in the chapter
+chapter.freqs.l[[chapter.title]] <- chapter.freqs.t.rel
+    } 
+}
+
+chapter.freqs.l[1]
+
+length(chapter.freqs.l)[1]
+```
+
+Suppose I wanted to get all relative frequencies of the word "father" in each chapter.
+
+```{r}
+father.freqs <- lapply(chapter.freqs.l, '[', 'father')
+
+father.freqs
+```
+
+You could also use variations of the `which` function to identify the chapters with the highest and lowest frequencies.
+
+```{r}
+which.max(father.freqs)
+
+which.min(father.freqs)
+```
+
+### Exercise
+
+Create a vector that confines your results to only the paragraphs with dialogue.
+
+```{r}
+dialogue.v <- grep('"(.*?)"', novel.lines.v) # grep is another regex function
+
+novel.lines.v[dialogue.v][1:20] 
+# check your work by finding all the dialogue lines in novel.lines.v
+```
+
+### Bonus Exercise
+
+Modify the for loop in Jockers to find word frequencies only of content with dialogue.
+
+```{r}
+dialogue.chapter.raws.l <- list()
+dialogue.chapter.freqs.l <- list()
+
+for(i in 1:length(chap.positions.v)){
+    if(i != length(chap.positions.v)){
+chapter.title <- novel.lines.v[chap.positions.v[i]]
+start <- chap.positions.v[i]+1
+end <- chap.positions.v[i+1]-1
+chapter.lines.v <- novel.lines.v[start:end]
+dialogue.lines.v <- grep('"(.*?)"', chapter.lines.v, value = TRUE) # here is the grep again, pruning the chapter.lines vector into lines with dialogue
+chapter.words.v <- tolower(paste(dialogue.lines.v, collapse=" ")) 
+chapter.words.l <- strsplit(chapter.words.v, "\\W")
+chapter.word.v <- unlist(chapter.words.l)
+chapter.word.v <- chapter.word.v[which(chapter.word.v!="")] 
+chapter.freqs.t <- table(chapter.word.v) 
+dialogue.chapter.raws.l[[chapter.title]] <- chapter.freqs.t 
+chapter.freqs.t.rel <- 100*(chapter.freqs.t/sum(chapter.freqs.t)) 
+dialogue.chapter.freqs.l[[chapter.title]] <- chapter.freqs.t.rel
+    } 
+}
+
+dialogue.chapter.freqs.l[1]
+```
+
+### Visualising the data with `plot`
+
+```{r}
+# to extract the frequency data from all of the chapters at once
+lapply(chapter.raws.l,mean)
+# putting results into a matric object
+mean.word.use.m <- do.call(rbind, lapply(chapter.raws.l,mean))
+dim(mean.word.use.m)
+# this reports 703 rows in 1 column, but there's more info in the matrix
+
+plot(mean.word.use.m, type = "h", main = "Mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter")
+```
+
+```{r}
+# using scale to method has the effect of sub- tracting away the expected value 
+# (expected as calculated by the overall mean) and then showing only the deviations from the mean
+scale(mean.word.use.m)
+plot(scale(mean.word.use.m), type = "h", main = "Scaled mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter") 
+```
+
+This gives us a general impression of vocabulary density on a chapter-by-chapter basis. Let's now return to the previous word search of "father." Suppose we wanted to visualise that frequency of "father" alongside a similar concept, "son."
+
+We need to introduce a new function, `lapply`. The `lapply` function is similar to a for loop, in that it iterates over the elements in a data structure, but it is specifically designed for dealing with lists. It also requires a list as a second argument, and the name of some other function.
+
+```{r}
+chapter.freqs.l[[1]]["father"]
+```
+
+```{r}
+chapter.freqs.l[[10]]["son"]
+```
+
+The above is just an example: The word "father" appears with 27% relative frequency (that is, 27 times for every 100 words in the chapter) in the first chapter, and the word "son" appear with a 4% relative frequency in the 10th chapter. Now let's create vectors that store the relative frequencies for each chapter.
+
+```{r}
+fathers.l <- lapply(chapter.freqs.l, '[', 'father')
+sons.l <- lapply(chapter.freqs.l, '[', 'son')
+```
+
+Instead of just printing out the values held in this new list, you can capture the results into a single matrix using the `rbind` function. The `do.call` functions binds the contents of each list item into rows; this effectively activate the `rbind` function across the list of "father" and "son" results, respectively.
+
+```{r}
+fathers.m <- do.call(rbind, fathers.l)
+sons.m <- do.call(rbind, sons.l)
+```
+
+Let's look at one of these matrices.
+
+```{r}
+sons.m
+```
+
+Compare it to the other matrix of "father" results.
+
+```{r}
+fathers.m
+```
+
+Next we create vectors for each search term; the following extracts the father and son values into two new vectors, and uses the `cbind` functions to combine these vectors into a new, two-column matrix consisting of 58 rows and 2 columns.
+
+```{r}
+fathers.v <- fathers.m[,1]
+sons.v <- sons.m[,1]
+
+fathers.sons.m <- cbind(fathers.v, sons.v)
+
+dim(fathers.sons.m)
+```
+
+Now we can visualise these two word searches.
+
+```{r}
+colnames(fathers.sons.m) <- c("father", "son")
+
+barplot(fathers.sons.m, beside=T, col="grey", ylab = "relative word frequency")
+
+```
+
+# Stylometry and Text Analysis with the `stylo` package
+
+## Installing stylo
+- run RStudio (or the R console)
+- in the Console, type install.packages("stylo"); or, find "Packages" in the lower-right pane, then click "Install," and type "stylo" and click "Install."
+- click Enter
+
+```{r}
+library(stylo)
+```
+
+
+## Installation issues
+
+**NOTE** (Mac OS users): the package stylo requires the installation of X11 support. (See http://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html: “Each binary distribution of R available through CRAN is build to use the X11 implementation of Tcl/Tk. Of course a X windows server has to be started first: this should happen automatically on OS X, provided it has been installed (it needs a separate install on Mountain Lion or later). The first time things are done in the X server there can be a long delay whilst a font cache is constructed; starting the server can take several seconds”.)
+
+You may also need to download XQuart at https://www.xquartz.org/.
+
+- Install XQuartz, restart Mac
+- Open Terminal, type: sudo ln -s /opt/X11 /usr/X11
+- Run XQuartz
+- Run R, type: system('defaults write org.R-project.R force.LANG en_US.UTF-8')
+
+On MacOS Mojave one usually faces the problem of not properly recognized tcltk support. Open your terminal and type the following command:
+
+`xcode-select --install`.
+
+This will download and install xcode developer tools and fix the problem. The problem is that one needs to explicitly agree to the license agreement.
+
+You might also run into encoding errors when you start up R (e.g. “WARNING: You’re using a non-UTF8 locale” etc.). In that case, you should close R, open a new window in Applications > Terminal and execute the following line:
+
+`defaults write org.R-project.R force.LANG en_US.UTF-8`.
+
+Next, close the Terminal and start up R again.
+
+See more at https://github.com/computationalstylistics/stylo.
+
+## Activate Stylo
+
+The main function is a single function: `stylo()`. This only works, though, if you have already set up a corpus (which is titled "corpus").
+
+Download the stylo corpus [here](https://www.dropbox.com/sh/n1tep3om866esa9/AABXfmK8syaAyXCjZ-ESKY2Za?dl=0). Make sure you have saved it to your Desktop, along with the R notebook. It contains works by Mark Twain and Charles Dudley Warner (more on why later).
+
+It computes distances (differences) between texts which are converted into rows of frequencies of most frequent words (MFW).
+
+Then it plots graphs of those distances:
+- Cluster Analysis plots (dendrograms)
+- Multidimensional Scaling scatterplots
+- Principal Components Analysis scatterplots
+- Bootstrap Consensus Trees plots (for multiple parameter settings)
+- Bootstrap Consensus Networks (other software will be needed to take over)
+
+The plots can be both displayed on screen and saved to a file (e.g. PNG).
+
+# stylo GUIs
+
+The package currently has two graphical user interfaces (GUI). One creates static visualisations of stylometric results, and the other creates a dynamic network graph that represents the distance measurements. 
+
+```{r}
+stylo()
+```
+
+What should pop up is the following stylo GUI:
+
+![stylo-gui.png](stylo-gui.png)
+
+For your first experiment you should just click "OK" and see what happens.
+
+The default settings use the ratios of the 100 most frequent words, Classic Delta distance measure, and Ward clustering algorithm to produce a hierarchical clustering dendrogram (think of it as akin to a stylistic family tree).
+
+There are various parameters in `stylo` that are worth exploring further and experimenting with.
+
+- INPUT: the text format
+- LANGUAGE (several options)
+- FEATURES: units to count, either words or characters. Ngram size: 1 for single words or characters, 2 for pairings, and so on. Usually people choose word unigrams (1 word).
+- MFW SETTINGS: how many most frequent words to use. In most cases, you will use a range from Minimum = Maximum ngram size.
+-CULLING filters out unwanted words. 0 = all the words survive culling;
+20 = a given word has to appear in at least 20% texts; 100 = removal of all words that don’t appear in all the texts (this is not typical).
+- DISTANCES: choose how the similarities between texts should be measured
+  - Classic Delta: perhaps a best choice to start; focuses on most common word frequencies
+  - Cosine Delta (aka Wurzburg Delta): perhaps an even better choice
+  - Eder’s Delta: a good choice for highly inflected languages
+- SAMPLING: option for splitting the texts
+  - no sampling: the texts will be analyzed as they are
+  - normal sampling: dividing the texts into equal-sized blocks
+  - random sampling: randomly harvesting N words from each text
+  - number of samples: random harvesting can be repeated n times
+
+Other distance measurements and text paramters can be defined in the GUI. But the GUI is not necessary; one can also use the stylo function with various arguments.
+
+```{r}
+# this function activates an already-existing dataset:
+data(lee)
+# this funcion launches the analysis with pre-defined parameters:
+stylo(frequencies = lee, analysis.type = "BCT", 
+    mfw.min = 100, mfw.max = 3000, custom.graph.title = "Harper Lee",
+    write.png.file = TRUE, gui = FALSE)
+```
+
+## Creating a network of similarities
+
+Run the chunk below to get the GUI for the network function, which outputs a bootstrap consensus network. Make sure you have installed the "networkD3" package before executing this code.
+
+```{r}
+stylo.network()
+```
+
+The relative distances are now mapped on a web browser and can be saved as html files for later use.
+
+## Corpus ingestion and analysis
+
+In the corpus dircetory above, I have included a subdirectory including by Mark Twain and Charles Dudley Warner. The reason for this is that they were near contemporaries and friends, and they co-wrote a novel called *The Gilded Age*. We are going to run stylo experiments to investigate the differences between the two authors.
+
+```{r}
+my.corpus <- load.corpus.and.parse(corpus.dir = "corpus", markup.type = "text", ngram.size = 1)
+```
+
+```{r}
+mt.cdw.freq.l <- make.frequency.list(my.corpus, value = FALSE, head = NULL,
+                    relative = TRUE)
+
+# this generates a word frequency list for the entire corpus
+```
+
+
+```{r}
+
+#these two lines of code automatically generate relative frequencies based on the above frequency list
+
+words = txt.to.words.ext(my.corpus)
+
+mt.cdw.rel.freq.t <- make.frequency.list(words, value = TRUE)
+
+mt.cdw.rel.freq.t[1:10]
+```
+
+```{r}
+make.samples(words, sampling = "normal.sampling", sample.size = 50)
+```
+
+
+```{r}
+complete.word.list = make.frequency.list(words)
+
+make.table.of.frequencies(words, complete.word.list)
+```
+
+```{r}
+mt.cdw.table <- write.csv(make.table.of.frequencies(words, complete.word.list), "mark-twain-warner-table.csv")
+#this outputs all of the work-based relative frequency data into a csv file
+```
+
+```{r}
+tokenized.corpus <- txt.to.words.ext(my.corpus, language = "English.all",
+                                     preserve.case = FALSE)
+
+summary(tokenized.corpus)
+```
+
+```{r}
+sliced.corpus <- make.samples(tokenized.corpus, sampling = "normal.sampling",
+                              sample.size = 100)
+frequent.features <- make.frequency.list(sliced.corpus)
+
+frequent.features[1:50]
+
+frequent.features[100:150]
+```
+
+
+## More stylo code
+
+The code below puts your stylo results into a variable so that you can call upon different columns from its data frame.
+
+```{r}
+stylo.results <- stylo()
+```
+
+```{r}
+stylo.results$features[1:100]
+```
+
+```{r}
+stylo.results$distance.table
+```
+
+
+## Craig's zeta comparison
+
+Craig's zeta will allow you to compare two data sets based on juxtaposing word preferences. In order to do this you need to create subdirectories within the `corpus` called `primary_set` and `secondary_set`. Copy the Mark Twain texts into the primary set, and the Warner into the secondary one.
+
+```{r}
+corpus <- as.data.frame("corpus/")
+
+corpus.all <- txt.to.words.ext(corpus, language = "English.all",
+                               preserve.case = TRUE) 
+corpus.mt <- corpus.all[grep("twain", names(corpus.all))]
+corpus.cdw <- corpus.all[grep("warner", names(corpus.all))]
+
+zeta.results <- oppose(primary.corpus = corpus.mt,
+                       secondary.corpus = corpus.cdw, gui = TRUE)
+# In the GUI, navigate to the corpus folder, in which you have put primary_set and secondary_set
+```
+
+This outputs a list of preferred and avoided words by the texts in the primary set (Mark Twain).
+
+```{r}
+zeta.results$words.preferred[1:20]
+
+zeta.results$words.avoided[1:20]
+```
+
+So, what is distinctly Mark Twain and what is Warner-esque?
+
+## Other useful functions 
+
+For performing supervised machine-learning analyses, including Burrows’s Delta, Support Vector Machines, and so forth:
+
+```{r}
+classify()
+```
+
+Performing contrastive analyses of two subcorpora:
+
+```{r}
+oppose()
+# in the GUI I have chosen Craig's zeta, which was used above, except I have checked the boxes for visualising differences: "Markers" and "Identify Points".
+```
+
+
+What can you gather from here about the probability of majority authorship?
+
+Rolling Stylometry technique (which slices an input text into equal-sized samples and compares them sequentially with reference data; it is good at finding local idiosyncrasies in longer texts). It can also analyse collaborative works and try to determine the authorship of fragments extracted from them. This requires that the working directory contains two subdirectories: "reference_set" and "test_set."
+
+```{r}
+rolling.classify(write.png.file = TRUE)
+```
+What you're seeing is a series of "windows" of the test text as against the reference texts. By “windowing” I mean that each reference text is divided into consecutive, equal-sized samples. It employs the relative frequencies of a (preferably small) set of n words which were also frequent in the reference collection. As Eder et al suggest, " If the curve for a text would show a sudden drop at a given position, this could be indicative of a stylistic change in the text (which might, for instance, be caused by one author taking over from another."
+
+The vertical lines in the plot can be thought to mark the position of certain events in the test text, either a change in chapter or a change in style.
+
+To learn more about stylo, consult [Eder, Rybicki, and Kestemont's documentation](https://4bc8d809-a-62cb3a1a-s-sites.googlegroups.com/site/computationalstylistics/stylo/stylo_howto.pdf?attachauth=ANoY7coDX7i5IQiUFMzj3t5plryJdzEX6HalsOFNYcY0MuEkRjEcgRdxintmXDmiTmrk9iiKOLNf_u-sXgosAnlG75tz1USWfoHiNe4rhFuFjoyqPfPaFIb3W4q63VxJ3a4Etpec8SMrqdMRMvkeApHeHzPNO3zvvUwmieVvBW3H68wOsWG2ZRRc4_nO0rM5dm2cb4obSiqjRe4_-VaDfN2vshvxBf_fwtvvzmzQGpCH5U9hnvTQb-M%3D&attredirects=0).
+
+## Using TidyText for distant reading
+
+For these two lessons we will be modifying code from Julia Silge and David Robinson's [*Text Mining with R: A Tidy Approach*](https://www.tidytextmining.com/).
+
+Before getting started, make sure you have set your working directory.
+
+```{r warning = FALSE}
+setwd("~/Desktop")
+```
+
+We did this to situate ourselves correctly within the filing system: I set the working directory to a reasonable place for me, the Desktop.
+
+Note that the squiggly line (~) tells the system to return to the root (or home) directory, and your Desktop should be the next step (/) from the root. In Windows you would need to type out the file path, so something like `C:\Users\[username]\Desktop`.
+
+Next we load the necessary libraries for these lessons. **Note**: If you get error messages, you will need to install the libraries by navigating to the "Packages" tab on the right-side panel of RStudio. Then click "Install," enter the name of the package, and install it.
+
+```{r warning=FALSE, message=FALSE}
+library(tidytext)
+library(dplyr)
+library(stringr)
+library(glue)
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+library(gutenbergr)
+```
+
+Before going into more details, I will briefly explain the 'tidy' approach to data that will be used in the following. The tidy approach assumes three principles regarding data structure:^[For more on this, see Hadley Wickham's “Tidy Data,” *Journal of Statistical Software* 59 (2014): 1–23. https://doi.org/10.18637/jss.v059.i10.]
+
+- Each variable is a column
+- Each observation is a row
+- Each type of observational unit is a table
+
+What results is a **table with one-token-per-row**. (Recall that a token is any meaningful unit of text: usually it is a word, but it can also be an n-gram, sentence, or even a root of a word.)
+
+```{r}
+pound_poem <- c("The apparition of these faces in the crowd;", "Petals on a wet, black bough.")
+
+pound_poem
+```
+
+Here we have created a character vector like we did before: the vector consists of two strings of text. In order to transform this into tidy format, we need to transform it into a data frame (here called a 'tibble', a type of data frame in R that is more convenient for text-based analysis).
+
+```{r}
+pound_poem_df <- tibble(line = 1:2, text = pound_poem)
+
+pound_poem_df
+```
+
+While better, this format is still not useful for tidy text analysis because we still need each word to be individually accounted for. To accomplish this act of tokenization, use the `unnest_tokens` function.
+
+```{r}
+pound_poem_df %>% unnest_tokens(word, text)
+# the unnest_tokens function requires two arguments: the output column name (word), and the input column that the text comes from (text)
+```
+
+Notice how each word is in its own row, but also that its original line number is still intact. That is the basic logic of tidy text analysis. Now let's apply this to a larger data set. 
+
+**Using the `gutenbergr`package with tidytext:**
+
+By running the gutenberg_authors function, you can see the file format of the names.
+
+```{r}
+gutenberg_authors
+```
+
+Let's run our first file loading function. 
+
+```{r}
+# this searches gutenberg for titles with the author name specified after the 'str_detect' function
+gutenberg_works(str_detect(author, "Livy"))$title
+```
+
+Did you notice anything wrong with this? The first result duplicates some of the content of the fourth, so we should not use that first text id. Remember, the first rule of scholarship is TRUST NO ONE. In computing, never trust your data. So we'll narrow the ingestion of the gutenberg ids to start with the second result.
+
+```{r message=FALSE}
+# creates a variable that takes all the gutenberg ids of 
+ids <- gutenberg_works(str_detect(author, "Livy"))$gutenberg_id[2:5]
+
+livy <- gutenbergr::gutenberg_download(ids)
+livy <- livy %>%
+  group_by(gutenberg_id) %>%
+  mutate(line = row_number()) %>%
+  ungroup()
+```
+
+Here we created a new vector called ```livy``` and invoked the 'gutenberg_works' function to find Livy. What does the ```gutenberg_download``` function do? Again, type in the ? before the function to receive a description from the R Documentation. Try the `example` function, too.
+
+Also, from the code above you might be wondering what the ```$``` and ```%>%``` symbols mean. The ```$``` refers to a variable. The ```%>%``` is a connector (a pipe) that mimics nesting. The rule is that the object on the left side is passed as the first argument to the function on the right hand side, so considering the last two lines, ```mutate(line = row_number()) %>% ungroup()``` is the same as ```ungroup(mutate(line = row_number()))```. It just makes the code (and particularly multi-step functions) more readable.^[Granted, it is not part of R's base code, but it was defined by the `magrittr` package and is now widely used in the ```dplyr``` and ```tidyr``` packages.]
+
+```{r}
+?gutenberg_download
+```
+
+Now let's see what we have downloaded. R has a summary function to show metadata about the new vector we just created, ```livy```.
+
+```{r}
+summary(livy)
+```
+
+Now we transform this into a tidy data set.
+
+```{r}
+tidy_livy <- livy %>%
+  unnest_tokens(output = word, input = text, token = "words")
+  
+tidy_livy %>% 
+  count(word, sort = TRUE) %>%
+  filter(n > 4000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+```
+
+Now we are mostly seeing functions words in these results. But what is interesting about the function words? Notice the prominence of pronouns, for example.
+
+Of course you will want to complement these results with substantive results (i.e., with stop words filtered out).
+
+```{r}
+data(stop_words)
+
+tidy_livy <- tidy_livy %>%
+  anti_join(stop_words)
+
+livy_plot <- tidy_livy %>% 
+  count(word, sort = TRUE) %>%
+  filter(n > 600) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col() +
+  ylab("Word frequencies in Livy's History of Rome") +
+  coord_flip()
+
+livy_plot
+```
+
+In the visual above, you might want to locate the button in the upper right corner 'Show in New Window', so that you can zoom the results out.
+
+We might also want to read (or have a searchable list in a table) of the word frequencies. The first code block below renders the results above in a table, and the second code block writes all of the results into a csv (spreadsheet) file.
+
+```{r}
+tidy_livy %>%
+  count(word, sort = TRUE)
+
+livy_words <- tidy_livy %>%
+  count(word, sort = TRUE)
+
+write_csv(livy_words, "livy_words.csv")
+
+# Note that if you want to retain the tidy data (that is, the title-line-word columns in multiple works, say),
+# then you would just invoke the tidy_livy variable: write_csv(tidy_livy, "livy_words.csv")
+```
+
+Much of what we have done can also be done in [Voyant Tools](http://voyant-tools.org/), to be sure. However, we have been able to load data *faster* in R, and we have also organized the data is tidytext tables that allow us to make judgments about the similarities and differences between the works in the corpus. It is also important to stress that you retain more control over organizing and manipulating your data with R, whereas in Voyant you are beholden to unstructured text files in a pre-built visualization interface.
+
+To illustrate this flexibility, let's investigate the data in ways that are unique to R (and programming in general).
+
+We might want to make similar calculations by book, which is easier now due to the tidy data structure.
+
+```{r}
+livy_word_freqs_by_book <- tidy_livy %>%
+  group_by(gutenberg_id) %>%
+  count(word, sort = TRUE) %>%
+  ungroup()
+
+livy_word_freqs_by_book %>%
+    filter(n > 250) %>%
+    ggplot(mapping = aes(x = word, y = n)) +
+    geom_col() +
+    coord_flip()
+```
+
+This shows you the general trend of each word that is used more than 250 times in alphabetical order. We can also break up the results into individual graphs for each book.
+
+```{r}
+livy_word_freqs_by_book %>%
+    filter(n > 250) %>%
+    ggplot(mapping = aes(x = word, y = n)) +
+    geom_col() +
+    coord_flip() + facet_wrap(facets = ~ gutenberg_id)
+```
+
+This might appear to be an overwhelming picture, but it is an immediate display of similarities and differences between books. Granted, they are slightly out of order (id 10907 is The History of Rome, Books 09 to 26, and 12582 is Books 01 to 08), but you can immediately notice how the first half differs from the second in its content.  
+
+We could re-engineer the code in the previous examples to look more closely at these results. First we'll narrow our data set to the more interesting id numbers mentioned already.
+
+```{r}
+livy2 <- gutenberg_download(c(10907, 44318))
+
+livy_tidy2 <- livy2 %>%
+  group_by(gutenberg_id) %>%
+  mutate(line = row_number()) %>%
+  ungroup()
+
+livy_tidy2 <- livy_tidy2 %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+livy_word_freqs_by_book <- livy_tidy2 %>%
+  group_by(gutenberg_id) %>%
+  count(word, sort = TRUE) %>%
+  ungroup()
+
+livy_word_freqs_by_book %>%
+    filter(n > 210) %>%
+    ggplot(mapping = aes(x = word, y = n)) +
+    geom_col() +
+    coord_flip() + facet_wrap(facets = ~ gutenberg_id)
+
+```
+
+What is the most consistent word used throughout Livy's *History*?
+
+Let's now compare these results to another important chronicler, from a different era: Herodotus.
+
+```{r}
+herodotus <- gutenberg_download(c(2707, 2456))
+```
+
+This downloads the two-volume *Histories* of Herodotus e-text (note that the c values are the gutenberg ids of two vols of Herodotus' Histories. The ids can be found by searching for texts on gutenberg.org, clicking on the Bibrec tab, and copying the EBook-No.).
+
+```{r}
+tidy_herodotus <- herodotus %>%
+  unnest_tokens(word, text)
+
+tidy_herodotus %>%
+  count(word, sort = TRUE)
+```
+
+What are the differences here with the Livy results?
+
+Now let's filter out the stop words again.
+
+```{r}
+tidy_herodotus <- herodotus %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) 
+
+tidy_herodotus %>%
+  count(word, sort = TRUE)
+```
+
+We could also add into the mix yet another text. Let's try Edward Gibbon's majesterial *Decline and Fall of the Roman Empire*.
+
+```{r}
+gutenberg_works(str_detect(author, "Gibbon, Edward"))
+
+eg.ids <- gutenberg_works(str_detect(author, "Gibbon, Edward"))$gutenberg_id[1:6]
+eg.ids
+
+gibbon <- gutenbergr::gutenberg_download(eg.ids)
+
+tidy_gibbon <- gibbon %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+tidy_gibbon %>%
+  count(word, sort = TRUE)
+```
+
+
+Let's visualize the differences.
+
+```{r}
+tidy_livy
+tidy_herodotus
+tidy_gibbon
+frequency <- bind_rows(mutate(tidy_livy, author = "Livy"),
+                       mutate(tidy_herodotus, author = "Herodotus"),
+                       mutate(tidy_gibbon, author = "Edward Gibbon")) %>% 
+  mutate(word = str_extract(word, "['a-z']+")) %>%
+  count(author, word) %>%
+  group_by(author) %>%
+  mutate(proportion = n / sum(n)) %>% 
+  select(-n) %>% 
+  spread(author, proportion) %>% 
+  gather(author, proportion, `Livy`:`Herodotus`)
+```
+
+```{r message=FALSE}
+library(scales)
+ggplot(frequency, aes(x = proportion, y = `Edward Gibbon`, color = abs(`Edward Gibbon` - proportion))) +
+  geom_abline(color = "gray40", lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  scale_color_gradient(limits = c(0, 0.001), low = "darkslategray4", high = "gray75") +
+  facet_wrap(~author, ncol = 2) +
+  theme(legend.position="none") +
+  labs(y = "Edward Gibbon", x = NULL)
+```
+
+Words that group near the upper end of the diagonal line in these plots have similar frequencies in both sets of texts.
+
+```{r}
+cor.test(data = frequency[frequency$author == "Livy",],
+         ~ proportion + `Edward Gibbon`)
+```
+
+```{r}
+cor.test(data = frequency[frequency$author == "Herodotus",],
+         ~ proportion + `Edward Gibbon`)
+```
+
+What this proves (statistically) is that the word frequencies of Gibbon are more correlated to Herodotus than to Livy---which is fascinating, given that Gibbon what writing about the same subject as Livy! The differences are subtle, though. 
+
+What else can you infer from these comparisons?
+
+### Exercise
+
+Use the above code to create tidy text tibbles for three related authors, and try to visualise their respective proportion of word similarities.
