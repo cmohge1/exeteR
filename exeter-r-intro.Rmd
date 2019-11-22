@@ -500,370 +500,6 @@ That's actually a fairly small density number, 5.7% (*Moby-Dick* by comparison i
 
 The other important data structures are tables and data frames. These are probably the most useful for sophisticated analyses, because it renders the data in a table that is very similar to a spreadsheet. It is important to input your data in an Excel or Google docs spreadsheet and then export that data into a comma separated value (.csv) or tab separated value (.tsv) file. Many of the tidytext operations work with data frames, as we'll see later.
 
-### Flow control in R
-
-Flow control involves **stochastic simulation**, or repetitive operations or pattern recognition---two of the more important reasons why we use programming languages. The most common form of stochastic simulation is the for() loop. This is a logical command with the following syntax
-
-for (`name` in `seq`) {[enter commands]}
-
-This sets a variable called `name` (any thing you choose to assign) equal to each of the elements of the sequence (any sequence of values), which is usually a vector. Each of these iterates over the command as many times as is necessary. 
-
-```{r}
-for (i in letters[1:10]){
-  cat(i, ", which is followed by \n")
-}
-```
-
-
-What this literally means is: create a variable called `i` as an index for the loop. The first value of `i` is `a` (the first value of `letters`, after the `in`), and R executes the function within the loop (taking the instructions within the curly brackets). The code above just prints `i` and the text ", which is followed by" with a new line (signified by the regex "\n"). When the closing bracket is reached, `i` moves onto the next value (the second letter). When the loop reaches the last value of the sequence (the tenth of the `letters`), it is completed.
-
-Another simple example is the Fibonacci sequence. A for() loop can automatically generate the first 20 Fibonacci numbers.
-
-```{r}
-Fibonacci <- numeric(20) # creates a vector called Fibonacci that consists of 20 numeric vectors
-
-Fibonacci[1] <- Fibonacci[2] <- 1 # defines the first and second elements as a value of 1. This is important b/c the first two Fibonacci numbers are 1, and the next (3rd) number is gained by adding the first two
-
-for (i in 3:20) Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1] # says for each instance of the 3rd through 20th Fibonacci numbers, take the first element - 2 and add that to the next element - 1
-Fibonacci
-```
-
-
-We will not have time to go into details regarding these operations, but it is important to recognize them when you are reading or modifying someone else's code.
-
-### The IF statement
-
-The `if` statement allows you to make a decision, and is an important part of programming. The `if` statement can use used alone or a sequence of `if..else if...else` statements can be setup in a ladder for a sequence of decisions.
-
-```
-if (condition text) {
-  code to run when condition is true
-  
-} else if (another condition) {
-  cone to run when second condition is true
-  
-} else {
-  code to run otherwise
-  
-}
-```
-
-Let's create some simple vectors of random words to practice with:
-
-```{r}
-words.v <- c('sign', 'chance', 'pricey', 'hot', 'drawer', 'cabbage', 'elated', 'nation', 'offer', 'man', 'zebra')
-numbers.v <- c(1,2,3,4,5,6,7,8,9,10)
-```
-
-We can check if a specific element is a certain value, by combining indices, boolen operators and if statements. Indices use square bracket notation and refer to the position of the element in the vector.
-
-Notice also the single line if syntax works with and without curly brackets:
-
-```{r}
-if (words.v[2] == 'chance') print('The second element is chance')
-
-if (words.v[3] == 'chance') { print('The third element is chance') }  # This will not print anything
-```
-
-Curly brackets are necessary when your if...then...else statement contains more than one line of code. It is often important to use indentation and formatting, to visually group the lines of code together.
-
-```{r}
-if (words.v[2] == 'chance') {
-  print('The third element is chance')
-  print('The third element is chance')
-}
-```
-
-We have been using square bracket notation to target specific elements by their position. The first element of a vector is index 1. If you wanted to test the last element in a vector, you need to know the vector's length.
-
-```{r}
-length(words.v)
-
-# Check if the last word in the vector is 'zebra'? Use the length() function inside the square brackets and add a test for equal to 'zebra'
-if (words.v[]) { print('The last element is zebra') }
-```
-
-
-
-
-### The FOR statement
-
-Some of the operations above implicity loop through vectors to perform element-wise operations, but it is sometimes useful to explicitly loop through vectors to perform specific tests and tasks on each element.
-
-We can use a for loop to go element-wise through our words vector, printing each word out along the way:
-
-```{r}
-for(val in words.v) {
-  # the variable 'val' is reused each iteration. It will contain the last value in the loop.
-  print(val)
-}
-```
-
-
-You can also use vector slicing syntax [x:x] to loop through small sections of vectors:
-
-```{r}
-# Print the first 4 elements?
-for(val in words.v[]) {
-  print(val)
-}
-```
-
-
-Now, let's create a vector of 20 random numbers using for loops. To do this, we use the `runif` function to generate a random number between 0 and 1, and a for loop, looping 20 times, adding each random number to the end of a vector variable.
-
-Let's look at the `runif()` help:
-
-```{r}
-?runif
-```
-
-```{r}
-# What does runif(1) return?
-
-```
-
-
-To generate 20 random numbers, we will need to loop 20 times. We can use the `seq()` function to generate a sequence vector with 20 elements (easier than typing it all out explicitly):
-
-```{r}
-seq(1,20)
-```
-
-So, putting this together, we first create an empty vector object outside the for loop, then loop 20 times, generate and add a new random number to the end of the vector object. Then, once the loop is complete, we print the vector:
-
-```{r}
-random.v <- c()
-for (val in seq(1,20)) {
-  random.v <- c(random.v, runif(1))
-}
-
-random.v
-```
-
-
-This is not an efficient way to generate or iterate vectors, but it is supposed to demonstrate looping and variable re-assignment.
-
-It's much easier to use the built in `runif()` feature to simply generate a vector of any number of random numbers!:
-
-```{r}
-# Generate 20 random numbers using runif()
-runif(20)
-```
-
-
-Now that you know how to loop, let's add some decisons inside the loop which are dependent on the value of each element. Notice that the variable `element` is being tested each time, and that the value of the element variable is changing. This is because the variable is 'scoped' to the for loop.
-
-Print out each random element, and 'TRUE' or 'FALSE' according to when the value is above 0.5:
-
-```{r}
-for (element in runif(20)) {
-  if (element >= 0.5) {
-    print(paste('TRUE  ', element))
-  }
-  # Add else to print 'FALSE' case?
-}
-```
-
-Notice that the code block above used the `paste()` function to print a boolean variable and a number. The paste function concatenates values/objects/constants into printable strings. You can use this to format variables for display and to check if the value is hat you expect.
-
-```{r}
-# Paste and print some variables, elements and constants together and see what happens?
-# e.g. print(paste(x, ',', my.v[1], "blah", words.v[3]))
-
-
-```
-
-There is also shorthand function for doing the same thing, called `cat()`:
-
-```{r}
-?cat
-```
-
-```{r}
-# Try printing elements and variables you have already created at the top of this notebook.
-# e.g. cat(x, ',', my.v[1], "blah", words.v[3])
-
-
-```
-
-### Jockers for-loop for text analysis
-
-Now, using what we know about regular expressions and flow control, let's have look at a for() loop that Matthew Jockers uses in Chapter 4 of his *Text Analysis for Students of Literature*. It's a fairly complicated but useful way of breaking up a novel text into chapters for analysis. Let's use it to process the Dickens novel. 
-
-```{r}
-text.v <- scan("/corpus/c19-20_prose/dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
-not.blanks.v <- which(text.v!="")
-clean.text.v <- text.v[not.blanks.v]
-
-start.v <- which(clean.text.v == "Chapter I")
-end.v <- which(clean.text.v == "THE END")
-novel.lines.v <- clean.text.v[start.v:end.v]
-chap.positions.v <- grep("^Chapter \\w", novel.lines.v)
-
-novel.lines.v[chap.positions.v]
-
-chapter.raws.l <- list()
-chapter.freqs.l <- list()
-
-# the following for loop starts by iterating over each item in chap.positions.v
-
-for(i in 1:length(chap.positions.v)){
-  # in this if statement: if the value of i is not equal to the length of the vector, keep iterating over the vector
-    if(i != length(chap.positions.v)){
-chapter.title <- novel.lines.v[chap.positions.v[i]] # this variable captures the chapter title in novel.lines.v that is indicated by the value held in the chap.positions.v. If this is confusing, try this: In your console, set i to 1 by running i <- 1. Then run novel.lines.v[chap.positions.v[i]]
-start <- chap.positions.v[i]+1 # i+1 gives me the position of the first line of the chapter text (the first paragraph after the ch title, in other words)
-end <- chap.positions.v[i+1]-1 # run these lines in the console: i <- 1, then chap.positions.v[i+1]. Instead of adding 1 to the value stored in the ith position of chap.positions.v, it adds 1 to i as an index. Instead of extracting the value of the ith item in the vector, the program identifies the value of the item in the next position beyond i in the vector. This line returns the next item in the vector, and the value held in that spot is the position for the start of a new chapter. This ensures the processing of the next chapter. To ignore the words in the chapter heading, you subtract 1 from that value in order to get the line number in novel.lines.v that comes just before the start of a new chapter.
-chapter.lines.v <- novel.lines.v[start:end] # having defined start and end points of each chapter, you extract the lines
-chapter.words.v <- tolower(paste(chapter.lines.v, collapse=" ")) # pastes chapter lines into a single block of text, and lowercases each word
-chapter.words.l <- strsplit(chapter.words.v, "\\W") # split all words in each chapter into a vector of words
-chapter.word.v <- unlist(chapter.words.l)
-chapter.word.v <- chapter.word.v[which(chapter.word.v!="")] 
-chapter.freqs.t <- table(chapter.word.v) # tabulates vector of words into a frequency count of each word type
-chapter.raws.l[[chapter.title]] <- chapter.freqs.t # here you dump the table of raw frequency counts into the empty list that was created before entering the loop. The double brackets assign a label to the list item; here each item in the list is named with the chapter heading extracted a few lines above
-chapter.freqs.t.rel <- 100*(chapter.freqs.t/sum(chapter.freqs.t)) # converts the raw counts to relative frequencies based on the number of words in the chapter
-chapter.freqs.l[[chapter.title]] <- chapter.freqs.t.rel
-    } 
-}
-
-chapter.freqs.l[1]
-
-length(chapter.freqs.l)[1]
-```
-
-Suppose I wanted to get all relative frequencies of the word "father" in each chapter.
-
-```{r}
-father.freqs <- lapply(chapter.freqs.l, '[', 'father')
-
-father.freqs
-```
-
-You could also use variations of the `which` function to identify the chapters with the highest and lowest frequencies.
-
-```{r}
-which.max(father.freqs)
-
-which.min(father.freqs)
-```
-
-### Exercise
-
-Create a vector that confines your results to only the paragraphs with dialogue.
-
-```{r}
-dialogue.v <- grep('"(.*?)"', novel.lines.v) # grep is another regex function
-
-novel.lines.v[dialogue.v][1:20] 
-# check your work by finding all the dialogue lines in novel.lines.v
-```
-
-### Bonus Exercise
-
-Modify the for loop in Jockers to find word frequencies only of content with dialogue.
-
-```{r}
-dialogue.chapter.raws.l <- list()
-dialogue.chapter.freqs.l <- list()
-
-for(i in 1:length(chap.positions.v)){
-    if(i != length(chap.positions.v)){
-chapter.title <- novel.lines.v[chap.positions.v[i]]
-start <- chap.positions.v[i]+1
-end <- chap.positions.v[i+1]-1
-chapter.lines.v <- novel.lines.v[start:end]
-dialogue.lines.v <- grep('"(.*?)"', chapter.lines.v, value = TRUE) # here is the grep again, pruning the chapter.lines vector into lines with dialogue
-chapter.words.v <- tolower(paste(dialogue.lines.v, collapse=" ")) 
-chapter.words.l <- strsplit(chapter.words.v, "\\W")
-chapter.word.v <- unlist(chapter.words.l)
-chapter.word.v <- chapter.word.v[which(chapter.word.v!="")] 
-chapter.freqs.t <- table(chapter.word.v) 
-dialogue.chapter.raws.l[[chapter.title]] <- chapter.freqs.t 
-chapter.freqs.t.rel <- 100*(chapter.freqs.t/sum(chapter.freqs.t)) 
-dialogue.chapter.freqs.l[[chapter.title]] <- chapter.freqs.t.rel
-    } 
-}
-
-dialogue.chapter.freqs.l[1]
-```
-
-### Visualising the data with `plot`
-
-```{r}
-# to extract the frequency data from all of the chapters at once
-lapply(chapter.raws.l,mean)
-# putting results into a matric object
-mean.word.use.m <- do.call(rbind, lapply(chapter.raws.l,mean))
-dim(mean.word.use.m)
-# this reports 703 rows in 1 column, but there's more info in the matrix
-
-plot(mean.word.use.m, type = "h", main = "Mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter")
-```
-
-```{r}
-# using scale to method has the effect of sub- tracting away the expected value 
-# (expected as calculated by the overall mean) and then showing only the deviations from the mean
-scale(mean.word.use.m)
-plot(scale(mean.word.use.m), type = "h", main = "Scaled mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter") 
-```
-
-This gives us a general impression of vocabulary density on a chapter-by-chapter basis. Let's now return to the previous word search of "father." Suppose we wanted to visualise that frequency of "father" alongside a similar concept, "son."
-
-We need to introduce a new function, `lapply`. The `lapply` function is similar to a for loop, in that it iterates over the elements in a data structure, but it is specifically designed for dealing with lists. It also requires a list as a second argument, and the name of some other function.
-
-```{r}
-chapter.freqs.l[[1]]["father"]
-```
-
-```{r}
-chapter.freqs.l[[10]]["son"]
-```
-
-The above is just an example: The word "father" appears with 27% relative frequency (that is, 27 times for every 100 words in the chapter) in the first chapter, and the word "son" appear with a 4% relative frequency in the 10th chapter. Now let's create vectors that store the relative frequencies for each chapter.
-
-```{r}
-fathers.l <- lapply(chapter.freqs.l, '[', 'father')
-sons.l <- lapply(chapter.freqs.l, '[', 'son')
-```
-
-Instead of just printing out the values held in this new list, you can capture the results into a single matrix using the `rbind` function. The `do.call` functions binds the contents of each list item into rows; this effectively activate the `rbind` function across the list of "father" and "son" results, respectively.
-
-```{r}
-fathers.m <- do.call(rbind, fathers.l)
-sons.m <- do.call(rbind, sons.l)
-```
-
-Let's look at one of these matrices.
-
-```{r}
-sons.m
-```
-
-Compare it to the other matrix of "father" results.
-
-```{r}
-fathers.m
-```
-
-Next we create vectors for each search term; the following extracts the father and son values into two new vectors, and uses the `cbind` functions to combine these vectors into a new, two-column matrix consisting of 58 rows and 2 columns.
-
-```{r}
-fathers.v <- fathers.m[,1]
-sons.v <- sons.m[,1]
-
-fathers.sons.m <- cbind(fathers.v, sons.v)
-
-dim(fathers.sons.m)
-```
-
-Now we can visualise these two word searches.
-
-```{r}
-colnames(fathers.sons.m) <- c("father", "son")
-
-barplot(fathers.sons.m, beside=T, col="grey", ylab = "relative word frequency")
-
-```
 
 # Stylometry and Text Analysis with the `stylo` package
 
@@ -1419,3 +1055,346 @@ What else can you infer from these comparisons?
 ### Exercise
 
 Use the above code to create tidy text tibbles for three related authors, and try to visualise their respective proportion of word similarities.
+
+### Flow control in R
+
+Flow control involves **stochastic simulation**, or repetitive operations or pattern recognition---two of the more important reasons why we use programming languages. The most common form of stochastic simulation is the for() loop. This is a logical command with the following syntax
+
+for (`name` in `seq`) {[enter commands]}
+
+This sets a variable called `name` (any thing you choose to assign) equal to each of the elements of the sequence (any sequence of values), which is usually a vector. Each of these iterates over the command as many times as is necessary. 
+
+```{r}
+for (i in letters[1:10]){
+  cat(i, ", which is followed by \n")
+}
+```
+
+
+What this literally means is: create a variable called `i` as an index for the loop. The first value of `i` is `a` (the first value of `letters`, after the `in`), and R executes the function within the loop (taking the instructions within the curly brackets). The code above just prints `i` and the text ", which is followed by" with a new line (signified by the regex "\n"). When the closing bracket is reached, `i` moves onto the next value (the second letter). When the loop reaches the last value of the sequence (the tenth of the `letters`), it is completed.
+
+Another simple example is the Fibonacci sequence. A for() loop can automatically generate the first 20 Fibonacci numbers.
+
+```{r}
+Fibonacci <- numeric(20) # creates a vector called Fibonacci that consists of 20 numeric vectors
+
+Fibonacci[1] <- Fibonacci[2] <- 1 # defines the first and second elements as a value of 1. This is important b/c the first two Fibonacci numbers are 1, and the next (3rd) number is gained by adding the first two
+
+for (i in 3:20) Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1] # says for each instance of the 3rd through 20th Fibonacci numbers, take the first element - 2 and add that to the next element - 1
+Fibonacci
+```
+
+
+### The IF statement
+
+The `if` statement allows you to make a decision, and is an important part of programming. The `if` statement can use used alone or a sequence of `if..else if...else` statements can be setup in a ladder for a sequence of decisions.
+
+```
+if (condition text) {
+  code to run when condition is true
+  
+} else if (another condition) {
+  cone to run when second condition is true
+  
+} else {
+  code to run otherwise
+  
+}
+```
+
+Let's create some simple vectors of random words to practice with:
+
+```{r}
+words.v <- c('sign', 'chance', 'pricey', 'hot', 'drawer', 'cabbage', 'elated', 'nation', 'offer', 'man', 'zebra')
+numbers.v <- c(1,2,3,4,5,6,7,8,9,10)
+```
+
+We can check if a specific element is a certain value, by combining indices, boolen operators and if statements. Indices use square bracket notation and refer to the position of the element in the vector.
+
+Notice also the single line if syntax works with and without curly brackets:
+
+```{r}
+if (words.v[2] == 'chance') print('The second element is chance')
+
+if (words.v[3] == 'chance') { print('The third element is chance') }  # This will not print anything
+```
+
+Curly brackets are necessary when your if...then...else statement contains more than one line of code. It is often important to use indentation and formatting, to visually group the lines of code together.
+
+```{r}
+if (words.v[2] == 'chance') {
+  print('The third element is chance')
+  print('The third element is chance')
+}
+```
+
+We have been using square bracket notation to target specific elements by their position. The first element of a vector is index 1. If you wanted to test the last element in a vector, you need to know the vector's length.
+
+```{r}
+length(words.v)
+
+# Check if the last word in the vector is 'zebra'? Use the length() function inside the square brackets and add a test for equal to 'zebra'
+if (words.v[]) { print('The last element is zebra') }
+```
+
+
+
+
+### The FOR statement
+
+Some of the operations above implicity loop through vectors to perform element-wise operations, but it is sometimes useful to explicitly loop through vectors to perform specific tests and tasks on each element.
+
+We can use a for loop to go element-wise through our words vector, printing each word out along the way:
+
+```{r}
+for(val in words.v) {
+  # the variable 'val' is reused each iteration. It will contain the last value in the loop.
+  print(val)
+}
+```
+
+
+You can also use vector slicing syntax [x:x] to loop through small sections of vectors:
+
+```{r}
+# Print the first 4 elements?
+for(val in words.v[]) {
+  print(val)
+}
+```
+
+
+Now, let's create a vector of 20 random numbers using for loops. To do this, we use the `runif` function to generate a random number between 0 and 1, and a for loop, looping 20 times, adding each random number to the end of a vector variable.
+
+Let's look at the `runif()` help:
+
+```{r}
+?runif
+```
+
+```{r}
+# What does runif(1) return?
+
+```
+
+
+To generate 20 random numbers, we will need to loop 20 times. We can use the `seq()` function to generate a sequence vector with 20 elements (easier than typing it all out explicitly):
+
+```{r}
+seq(1,20)
+```
+
+So, putting this together, we first create an empty vector object outside the for loop, then loop 20 times, generate and add a new random number to the end of the vector object. Then, once the loop is complete, we print the vector:
+
+```{r}
+random.v <- c()
+for (val in seq(1,20)) {
+  random.v <- c(random.v, runif(1))
+}
+
+random.v
+```
+
+
+This is not an efficient way to generate or iterate vectors, but it is supposed to demonstrate looping and variable re-assignment.
+
+It's much easier to use the built in `runif()` feature to simply generate a vector of any number of random numbers!:
+
+```{r}
+# Generate 20 random numbers using runif()
+runif(20)
+```
+
+
+Now that you know how to loop, let's add some decisons inside the loop which are dependent on the value of each element. Notice that the variable `element` is being tested each time, and that the value of the element variable is changing. This is because the variable is 'scoped' to the for loop.
+
+Print out each random element, and 'TRUE' or 'FALSE' according to when the value is above 0.5:
+
+```{r}
+for (element in runif(20)) {
+  if (element >= 0.5) {
+    print(paste('TRUE  ', element))
+  }
+  # Add else to print 'FALSE' case?
+}
+```
+
+Notice that the code block above used the `paste()` function to print a boolean variable and a number. The paste function concatenates values/objects/constants into printable strings. You can use this to format variables for display and to check if the value is hat you expect.
+
+```{r}
+# Paste and print some variables, elements and constants together and see what happens?
+# e.g. print(paste(x, ',', my.v[1], "blah", words.v[3]))
+
+
+```
+
+There is also shorthand function for doing the same thing, called `cat()`:
+
+```{r}
+?cat
+```
+
+```{r}
+# Try printing elements and variables you have already created at the top of this notebook.
+# e.g. cat(x, ',', my.v[1], "blah", words.v[3])
+
+
+```
+
+### Jockers for-loop for text analysis
+
+Now, using what we know about regular expressions and flow control, let's have look at a for() loop that Matthew Jockers uses in Chapter 4 of his *Text Analysis for Students of Literature*. It's a fairly complicated but useful way of breaking up a novel text into chapters for analysis. Let's use it to process the Dickens novel. 
+
+```{r}
+text.v <- scan("/corpus/c19-20_prose/dickens_great-expectations.txt", what="character", sep="\n", encoding = "UTF-8")
+not.blanks.v <- which(text.v!="")
+clean.text.v <- text.v[not.blanks.v]
+
+start.v <- which(clean.text.v == "Chapter I")
+end.v <- which(clean.text.v == "THE END")
+novel.lines.v <- clean.text.v[start.v:end.v]
+chap.positions.v <- grep("^Chapter \\w", novel.lines.v)
+
+novel.lines.v[chap.positions.v]
+
+chapter.raws.l <- list()
+chapter.freqs.l <- list()
+
+# the following for loop starts by iterating over each item in chap.positions.v
+
+for(i in 1:length(chap.positions.v)){
+  # in this if statement: if the value of i is not equal to the length of the vector, keep iterating over the vector
+    if(i != length(chap.positions.v)){
+chapter.title <- novel.lines.v[chap.positions.v[i]] # this variable captures the chapter title in novel.lines.v that is indicated by the value held in the chap.positions.v. If this is confusing, try this: In your console, set i to 1 by running i <- 1. Then run novel.lines.v[chap.positions.v[i]]
+start <- chap.positions.v[i]+1 # i+1 gives me the position of the first line of the chapter text (the first paragraph after the ch title, in other words)
+end <- chap.positions.v[i+1]-1 # run these lines in the console: i <- 1, then chap.positions.v[i+1]. Instead of adding 1 to the value stored in the ith position of chap.positions.v, it adds 1 to i as an index. Instead of extracting the value of the ith item in the vector, the program identifies the value of the item in the next position beyond i in the vector. This line returns the next item in the vector, and the value held in that spot is the position for the start of a new chapter. This ensures the processing of the next chapter. To ignore the words in the chapter heading, you subtract 1 from that value in order to get the line number in novel.lines.v that comes just before the start of a new chapter.
+chapter.lines.v <- novel.lines.v[start:end] # having defined start and end points of each chapter, you extract the lines
+chapter.words.v <- tolower(paste(chapter.lines.v, collapse=" ")) # pastes chapter lines into a single block of text, and lowercases each word
+chapter.words.l <- strsplit(chapter.words.v, "\\W") # split all words in each chapter into a vector of words
+chapter.word.v <- unlist(chapter.words.l)
+chapter.word.v <- chapter.word.v[which(chapter.word.v!="")] 
+chapter.freqs.t <- table(chapter.word.v) # tabulates vector of words into a frequency count of each word type
+chapter.raws.l[[chapter.title]] <- chapter.freqs.t # here you dump the table of raw frequency counts into the empty list that was created before entering the loop. The double brackets assign a label to the list item; here each item in the list is named with the chapter heading extracted a few lines above
+chapter.freqs.t.rel <- 100*(chapter.freqs.t/sum(chapter.freqs.t)) # converts the raw counts to relative frequencies based on the number of words in the chapter
+chapter.freqs.l[[chapter.title]] <- chapter.freqs.t.rel
+    } 
+}
+
+chapter.freqs.l[1]
+
+length(chapter.freqs.l)[1]
+```
+
+Suppose I wanted to get all relative frequencies of the word "father" in each chapter.
+
+```{r}
+father.freqs <- lapply(chapter.freqs.l, '[', 'father')
+
+father.freqs
+```
+
+You could also use variations of the `which` function to identify the chapters with the highest and lowest frequencies.
+
+```{r}
+which.max(father.freqs)
+
+which.min(father.freqs)
+```
+
+### Exercise
+
+Create a vector that confines your results to only the paragraphs with dialogue.
+
+```{r}
+dialogue.v <- grep('"(.*?)"', novel.lines.v) # grep is another regex function
+
+novel.lines.v[dialogue.v][1:20] 
+# check your work by finding all the dialogue lines in novel.lines.v
+```
+
+### Bonus Exercise
+
+Modify the for loop in Jockers to find word frequencies only of content with dialogue.
+
+```{r}
+
+```
+
+### Visualising the data with `plot`
+
+```{r}
+# to extract the frequency data from all of the chapters at once
+lapply(chapter.raws.l,mean)
+# putting results into a matric object
+mean.word.use.m <- do.call(rbind, lapply(chapter.raws.l,mean))
+dim(mean.word.use.m)
+# this reports 703 rows in 1 column, but there's more info in the matrix
+
+plot(mean.word.use.m, type = "h", main = "Mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter")
+```
+
+```{r}
+# using scale to method has the effect of sub- tracting away the expected value 
+# (expected as calculated by the overall mean) and then showing only the deviations from the mean
+scale(mean.word.use.m)
+plot(scale(mean.word.use.m), type = "h", main = "Scaled mean word usage patterns in each chapter of Dickens's Great Expectations", ylab = "mean word use", xlab = "Each chapter") 
+```
+
+This gives us a general impression of vocabulary density on a chapter-by-chapter basis. Let's now return to the previous word search of "father." Suppose we wanted to visualise that frequency of "father" alongside a similar concept, "son."
+
+We need to introduce a new function, `lapply`. The `lapply` function is similar to a for loop, in that it iterates over the elements in a data structure, but it is specifically designed for dealing with lists. It also requires a list as a second argument, and the name of some other function.
+
+```{r}
+chapter.freqs.l[[1]]["father"]
+```
+
+```{r}
+chapter.freqs.l[[10]]["son"]
+```
+
+The above is just an example: The word "father" appears with 27% relative frequency (that is, 27 times for every 100 words in the chapter) in the first chapter, and the word "son" appear with a 4% relative frequency in the 10th chapter. Now let's create vectors that store the relative frequencies for each chapter.
+
+```{r}
+fathers.l <- lapply(chapter.freqs.l, '[', 'father')
+sons.l <- lapply(chapter.freqs.l, '[', 'son')
+```
+
+Instead of just printing out the values held in this new list, you can capture the results into a single matrix using the `rbind` function. The `do.call` functions binds the contents of each list item into rows; this effectively activate the `rbind` function across the list of "father" and "son" results, respectively.
+
+```{r}
+fathers.m <- do.call(rbind, fathers.l)
+sons.m <- do.call(rbind, sons.l)
+```
+
+Let's look at one of these matrices.
+
+```{r}
+sons.m
+```
+
+Compare it to the other matrix of "father" results.
+
+```{r}
+fathers.m
+```
+
+Next we create vectors for each search term; the following extracts the father and son values into two new vectors, and uses the `cbind` functions to combine these vectors into a new, two-column matrix consisting of 58 rows and 2 columns.
+
+```{r}
+fathers.v <- fathers.m[,1]
+sons.v <- sons.m[,1]
+
+fathers.sons.m <- cbind(fathers.v, sons.v)
+
+dim(fathers.sons.m)
+```
+
+Now we can visualise these two word searches.
+
+```{r}
+colnames(fathers.sons.m) <- c("father", "son")
+
+barplot(fathers.sons.m, beside=T, col="grey", ylab = "relative word frequency")
+
+```
+
