@@ -4,6 +4,6 @@
 
 This is the repo for a one-day workshop at the University of Exeter Digital Humanities Lab.
 
-[Download the R notebook of today's session](exeter-r-intro.Rmd).
+[Download the R notebook of today's session](exeter-r-intro.Rmd). [Note: click on the "Raw" tab and make sure to download as an .Rmd file]
 
 Before getting into the notebook, I will give a short intro to text analysis. [Download the slides here](what-is-text-analysis.pdf).
